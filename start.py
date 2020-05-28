@@ -1,5 +1,6 @@
 #1Packages
 import pygame
+import math
 import random
 from pygame.locals import *
 
@@ -47,8 +48,19 @@ while running:
 	gameWindow.blit(fighter,playerPosition)
 
 	#6.2 firing arrows
-	#for bullet in arrows:
-		
+	for bullet in arrows:
+		index=0
+		# velx=math.cos(bullet[0])*10
+		# vely=math.sin(bullet[0])*10
+		bullet[0]+=10
+		bullet[1]+=10
+		if bullet[1]<-64 or bullet[1]>640 or bullet[0]<-64 or bullet[0]>480:
+			arrows.pop(index)
+		index+=1
+		for projectile in arrows:
+			# arrow1 = pygame.transform.rotate(arrow,360-projectile[0]*57.29)
+			# arrow1 = pygame.transform.rotate(arrow,360)
+			gameWindow.blit(arrow,(projectile[0],projectile[1]))
 
 
 	#6.3 drawing enemies
@@ -64,7 +76,7 @@ while running:
 		if badguy[0]<-64:
 			badguys.pop(index)
 		badguy[0]-=7
-		#.3.1 - Attack castle
+		#6.3.1 - Attack castle
 		badrect=pygame.Rect(badguyimg.get_rect())
 		badrect.top=badguy[1]
 		badrect.left=badguy[0]
@@ -94,6 +106,6 @@ while running:
 					flag-=1
 			elif event.key == K_RIGHT or event.key == K_LEFT:
 				acc[1]+=1
-				arrows.append(1)
+				arrows.append([playerPosition])
 	if flag in range(4):
 		playerPosition = castlePositions[flag]
